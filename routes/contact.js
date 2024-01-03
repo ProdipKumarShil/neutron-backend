@@ -58,5 +58,27 @@ router.delete('/deleteContact/:id', async(req, res) => {
   }
 })
 // update contact
+router.put('/updateContact/:id', async(req, res) => {
+  const id = req.params.id
+  const newContact = req.body
+  try{
+    const updateData = await Contact.findByIdAndUpdate(id, newContact, {new: true})
+    if(!updateData){
+      return res.status(404).json({
+        status: false,
+        message: "Contact not found",
+      })
+    }
+    res.json({
+      status: true,
+      message: "Contact Updated Successfully",
+    })
+  } catch(e){
+    res.status(500).json({
+      status: false,
+      message: "Internal Server Error",
+    })
+  }
+})
 
 module.exports = router
